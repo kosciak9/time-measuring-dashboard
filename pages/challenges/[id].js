@@ -15,11 +15,47 @@ import {
 
 const ChallengeDetails = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id: challenge_id } = router.query;
 
-  const { isLoading, error, data } = useQuery(id, () =>
-    client.url(`/challenges/${id}`).get().json()
-  );
+  const { isLoading, error, data } = useQuery(challenge_id, async () => {
+    const response = await client
+      .post({
+        query: `
+          query MyQuery($challenge_id: uuid!) {
+            challenges_by_pk(id: $challenge_id) {
+              id
+              name
+              start_time
+              end_time
+              prize
+              challenge_contestants {
+                group {
+                  name
+                  id
+                  group_members {
+                    user {
+                      name
+                    }
+                  }
+                }
+              }
+              activities {
+                id
+                distance
+                user {
+                  id
+                  name
+                  surname
+                }
+              }
+            }
+          }
+        `,
+        variables: { challenge_id },
+      })
+      .json();
+    return response.data.challenges_by_pk;
+  });
 
   return isLoading ? (
     "Loading..."
@@ -37,7 +73,7 @@ const ChallengeDetails = () => {
           <StarIcon mr={2} /> nagroda: {data.prize}
         </ListItem>
       </List>
-      <Accordion maxWidth="400px" my={4}>
+      {/* <Accordion maxWidth="400px" my={4}>
         {data.scores.map((score) => (
           <AccordionItem key={score.group_id}>
             <AccordionButton>
@@ -56,7 +92,7 @@ const ChallengeDetails = () => {
             </AccordionPanel>
           </AccordionItem>
         ))}
-      </Accordion>
+      </Accordion> */}
     </Box>
   );
 };

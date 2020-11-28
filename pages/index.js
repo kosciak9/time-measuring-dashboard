@@ -18,7 +18,7 @@ import { useState } from "react";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [admin_id] = useState("Vx1VYfFt4A86YaYtyGq1");
+  const [admin_id] = useState("2");
   const [forceRefresh, setForceRefresh] = useState(false);
 
   return (
