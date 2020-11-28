@@ -1,65 +1,56 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { ChallengeForm } from "../components/ChallengeForm";
+import { ChallengeList } from "../components/ChallengeList";
+import {
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  IconButton,
+  Tooltip,
+  Heading,
+} from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 
 export default function Home() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [admin_id] = useState("Vx1VYfFt4A86YaYtyGq1");
+  const [forceRefresh, setForceRefresh] = useState(false);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    <Box as="main" p={8}>
+      <Box zIndex="100" position="sticky" width="100%" top={0} py={4} backgroundColor="white">
+        <Heading>Twoje zawody</Heading>
+      </Box>
+      <ChallengeList forceRefresh={forceRefresh} admin_id={admin_id} />
+      <Tooltip label="Dodaj nowe zawody" placement="left">
+        <IconButton
+          colorScheme="green"
+          onClick={onOpen}
+          icon={<AddIcon />}
+          position="fixed"
+          bottom={8}
+          right={8}
+        />
+      </Tooltip>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Nowe zawody</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ChallengeForm
+              setForceRefresh={setForceRefresh}
+              admin_id={admin_id}
+              onClose={onClose}
+            />{" "}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
 }

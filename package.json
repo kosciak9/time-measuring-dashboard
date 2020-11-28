@@ -8,8 +8,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/accordion": "^1.0.1",
+    "@chakra-ui/icons": "^1.0.1",
+    "@chakra-ui/modal": "^1.1.0",
+    "@chakra-ui/react": "^1.0.1",
+    "@emotion/react": "^11.1.1",
+    "@emotion/styled": "^11.0.0",
+    "date-fns": "^2.16.1",
+    "formik": "^2.2.5",
+    "framer-motion": "^2.9.4",
     "next": "10.0.3",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-query": "^2.26.3",
+    "wretch": "^1.7.4"
   }
 }
