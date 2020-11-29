@@ -26,7 +26,7 @@ const Activities = ({ activities }) => {
             <StatLabel>
               {activity.user.name} {activity.user.surname}
             </StatLabel>
-            <StatNumber>{activity.distance || "brak danych :("}</StatNumber>
+            <StatNumber>{activity.distance || "brak danych :("} km</StatNumber>
             <StatHelpText>
               w dniu: {date ? format(new Date(date), "dd.MM.yyyy") : " :("}
             </StatHelpText>
