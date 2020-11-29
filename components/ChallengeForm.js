@@ -5,11 +5,25 @@ import { client } from "../lib/wretch";
 const ChallengeForm = ({ onClose, admin_id, setForceRefresh }) => {
   return (
     <Formik
-      initialValues={{ name: "", start_time: "", end_time: "", type: "", prize: "" }}
+      initialValues={{
+        name: "",
+        start_time: "",
+        end_time: "",
+        type: "",
+        prize: "",
+      }}
       onSubmit={(values, { setSubmitting }) => {
         client
-          .url("/challenges")
-          .post({ ...values, admin_id })
+          .post({
+            query: `
+              mutation MyMutation($challenge: challenges_insert_input!) {
+                insert_challenges_one(object: $challenge) {
+                  id
+                }
+              }
+          `,
+            variables: { challenge: { ...values, admin_id } },
+          })
           .json(() => {
             setForceRefresh(true);
             setSubmitting(false);
@@ -37,9 +51,25 @@ const ChallengeForm = ({ onClose, admin_id, setForceRefresh }) => {
             name="prize"
             placeholder="Skrócony opis nagrody, np.: dofinansowanie dla szkół ze zwycięskiej gminy"
           />
-          <Field as={Input} type="date" name="start_time" placeholder="Data rozpoczęcia zawodów" />
-          <Field as={Input} type="date" name="end_time" placeholder="Data zakończenia zawodów" />
-          <Button isFullWidth colorScheme="green" type="submit" disabled={isSubmitting} mb={2}>
+          <Field
+            as={Input}
+            type="date"
+            name="start_time"
+            placeholder="Data rozpoczęcia zawodów"
+          />
+          <Field
+            as={Input}
+            type="date"
+            name="end_time"
+            placeholder="Data zakończenia zawodów"
+          />
+          <Button
+            isFullWidth
+            colorScheme="green"
+            type="submit"
+            disabled={isSubmitting}
+            mb={2}
+          >
             Dodaj!
           </Button>
         </Box>
